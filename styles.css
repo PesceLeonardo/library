@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cont-pad: 32px;
+
+  font-size: 24px;
+}
+
+.container {
+  margin: 0 200px;
+  padding: var(--cont-pad);
+
+  height: 100vh;
+
+  background-color: rgb(225, 225, 225);
+
+  display: grid;
+  grid-template: calc(100vh - var(--cont-pad) * 2) / 300px 1fr;
+}
+
+main {
+  --row-size: 350px;
+  --col-size: 200px;
+
+  height: calc(100vh - var(--cont-pad) * 2);
+  overflow: scroll;
+
+  display: grid;
+  grid-template: var(--row-size) / repeat(auto-fit, var(--col-size));
+  grid-auto-rows: var(--row-size);
+  justify-content: space-evenly;
+
+}
+
+main > .book {
+  margin-bottom: 64px;
+}
+
+.book {
+  padding: 16px;
+  border: 8px double black;
+  border-radius: 8px;
+
+  background: linear-gradient(to bottom right, white, rgb(200, 200, 200));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  margin-top: 24px;
+  margin-bottom: 8px;
+
+  text-align: center;
+  font-size: 1rem;
+}
+
+.author {
+  font-size: 0.6rem;
+}
+
+.book progress {
+  margin-top: auto;
+
+  width: 80%;
+}
