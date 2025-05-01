@@ -10,21 +10,26 @@
   font-size: 24px;
 }
 
+/* ****************** */
+/* * MAIN CONTAINER * */
+/* ****************** */
+
 .container {
   margin: 0 200px;
-  padding: var(--cont-pad);
 
   height: 100vh;
 
   background-color: rgb(225, 225, 225);
 
   display: grid;
-  grid-template: calc(100vh - var(--cont-pad) * 2) / 300px 1fr;
+  grid-template: 100vh  / 200px 1fr;
 }
 
 main {
   --row-size: 350px;
   --col-size: 200px;
+
+  padding: var(--cont-pad);
 
   height: calc(100vh - var(--cont-pad) * 2);
   overflow: scroll;
@@ -36,11 +41,12 @@ main {
 
 }
 
-main > .book {
-  margin-bottom: 64px;
-}
+/* ********* */
+/* * BOOKS * */
+/* ********* */
 
 .book {
+  margin-bottom: 64px;
   padding: 16px;
   border: 8px double black;
   border-radius: 8px;
@@ -68,4 +74,54 @@ main > .book {
   margin-top: auto;
 
   width: 80%;
+}
+
+/* *********** */
+/* * SIDEBAR * */
+/* *********** */
+
+.sidebar {
+  padding: 8px;
+
+  background-color: rgb(250, 250, 250);
+}
+
+nav {
+  padding: 24px;
+
+  background-color: white;
+}
+
+nav ul {
+  list-style-type: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+nav li {
+  padding: 1px 8px 1px 4px;
+
+  height: 32px;
+  width: 128px;
+
+  text-align: center;
+
+  background-color: black;
+  clip-path: polygon(70% 0, 100% 50%, 70% 100%, 0 100%, 10% 50%, 0% 0%);
+
+  display: grid;
+  grid-template: 1fr / 1fr;
+}
+
+nav button {
+  background-color: white;
+  clip-path: polygon(70% 0, 100% 50%, 70% 100%, 0 100%, 10% 50%, 0% 0%);
+}
+
+nav li:hover {
+  transform: scale(1.2);
+  transition: all 0.1s ease-out;
 }
