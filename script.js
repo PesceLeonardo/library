@@ -37,8 +37,6 @@ function updateDOM(bookObject) {
 
 function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
   library.push(new Book(name, author, publishingDate, coverURL, totalPages, readPages, crypto.randomUUID()));
-
-  
 }
 
 function readBook(numberPages, bookID) {
