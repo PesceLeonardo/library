@@ -9,24 +9,43 @@
 
   <body>
 
+    <div class="read-form hide">
+      <label for="read-form-input">
+        Pages
+        <input type="number" id="read-form-input" name="read-form-input">
+      </label>
+
+      <label for="read-form-input-amount">
+        <input type="radio" value="amount" name="read-form-input-type" id="read-form-input-amount" checked>
+        Read N pages
+      </label>
+
+      <label for="read-form-input-up-to">
+        <input type="radio" value="up-to" name="read-form-input-type" id="read-form-input-up-to">
+        Read up to page N
+      </label>
+
+      <button class="read-form-confirm-button">Confirm</button>
+    </div>
+
     <div class="container">
       <header class="sidebar">
         <nav>
           <ul>
-            <li><button type="button">Read</button></li>
-            <li><button type="button">Read all</button></li>
-            <li><button type="button">Add</button></li>
-            <li><button type="button">Remove</button></li>
-            <li><button type="button">Edit</button></li>
-            <li class="load">LOAD</li>
+            <li><button type="button" class="read-button">Read</button></li>
+            <li><button type="button" class="read-all-button">Read all</button></li>
+            <li><button type="button" class="add-button">Add</button></li>
+            <li><button type="button" class="remove-button">Remove</button></li>
+            <li><button type="button" class="edit-button">Edit</button></li>
           </ul>
         </nav>
       </header>
 
       <main class="content">
-        <article class="book">
+        <article class="book" id="BOOK-ID-TEST">
           <h2 class="title">Book</h2>
           <address class="author">By Author</address>
+          <address class="date">Published 12/12/2012</address>
           <progress value="0"></progress>
         </article>
 

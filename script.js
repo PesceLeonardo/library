@@ -1,70 +1,75 @@
-"use script";
+"use strict";
 
-let library = new Array();
+const library = new Array();
 
-function Book(title, author, releaseDate, pages, readStatus, imgSrc) {
-  this.title = title;
+function Book(name, author, publishingDate, coverURL, totalPages, readPages, bookID) {
+  this.name = name;
   this.author = author;
-  this.releaseDate = releaseDate;
-  this.pages = pages;
-  this.status = readStatus;
-  this.imgSrc = imgSrc;
-}
-Book.prototype.read = function() {
-  this.status = this.pages;
-}
-Book.prototype.info = function() {
-  return `${this.title} by ${this.author}, ${this.pages} pages, released in ${this.releaseDate}, ${this.status ? "read" : "not read yet"}`;
+  this.publishingDate = publishingDate;
+  this.coverURL = coverURL;
+  this.readPages = readPages;
+  this.totalPages = totalPages;
+  this.bookID = bookID;
 }
 
-function addBook(arr, title, author, releaseDate, pages, readStatus, imgSrc) {
-  arr.push(new Book(title, author, releaseDate, pages, readStatus, imgSrc));
+function getBookIndex(bookID) {
+  return library.findIndex(book => book.bookID === bookID);
 }
 
-const DOM_main = document.querySelector("main");
-const DOM_loadButton = document.querySelector("li.load");
+function updateDOM(bookObject) {
+  const bookID = bookObject.bookID;
 
+  const bookArticle = document.querySelector(`article#${bookID}`);
+  const bookTitle = document.querySelector(`article#${bookID} h2.title`);
+  const bookAuthor = document.querySelector(`article#${bookID} address.author`);
+  const bookPublishingDate = document.querySelector(`article#${bookID} address.date`);
+  const bookReadPercentage = document.querySelector(`article#${bookID} progress`);
 
-// Example Books_
+  if (bookTitle) bookTitle.innerHTML = bookObject.name;
+  if (bookAuthor) bookAuthor.innerHTML = `By ${bookObject.author}`;
+  if (bookPublishingDate) bookPublishingDate.innerHTML = `In ${bookObject.publishingDate}`;
+  if (bookReadPercentage) bookReadPercentage.value = bookObject.readPages / bookObject.totalPages;
 
-const book1 = new Book(
-  "The Lord of the Rings",
-  "J.R.K. Tolkien",
-  1921,
-  256,
-  57,
-  null
-);
-
-addBook(
-  library,
-  "The Lord of the Rings",
-  "J.R.K. Tolkien",
-  1921,
-  256,
-  57,
-  null
-);
-
-function addBooksFromLibrary() {
-  for (const book of library) {
-    const newElement = document.createElement("article");
-    newElement.classList.add("book");
-    if (book.imgSrc) {
-      newElement.style.background = `url(${imgSrc}) center / cover no-repeat`;
-    } else {
-      newElement.innerHTML = `<h2 class="title">${book.title}</h2>
-                                <address class="author">By ${book.author}</address>
-                                <progress value="${book.status / book.pages}"></progress>
-                              </article>`
-    }
-    console.log(book.pages);
-    console.log(book.status);
-    console.log(book.status / book.pages);
-    book.id = newElement.id = crypto.randomUUID();
-    console.log(book.id);
-    DOM_main.appendChild(newElement);
+  if (bookObject.coverURL && bookArticle) {
+    bookArticle.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
   }
 }
 
-DOM_loadButton.addEventListener("click", addBooksFromLibrary);
+function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
+  library.push(new Book(name, author, publishingDate, coverURL, totalPages, readPages, crypto.randomUUID()));
+
+  
+}
+
+function readBook(numberPages, bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const book = library[bookIndex];
+  book.readPages += numberPages;
+  if (book.readPages > book.totalPages) book.readPages = book.totalPages;
+
+  updateDOM(book);
+}
+
+function readAllBook(bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const book = library[bookIndex];
+  book.readPages = book.totalPages;
+
+  updateDOM(book);
+}
+
+function editBook(title, author, publishingDate, bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const book = library[bookIndex];
+  book.title = title;
+  book.author = author;
+  book.publishingDate = publishingDate;
+
+  updateDOM(book);
+}
