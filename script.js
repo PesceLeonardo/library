@@ -2,6 +2,8 @@
 
 const library = new Array();
 
+const DOM_main = document.querySelector("main");
+
 function Book(name, author, publishingDate, coverURL, totalPages, readPages, bookID) {
   this.name = name;
   this.author = author;
@@ -74,3 +76,48 @@ function editBook(title, author, publishingDate, bookID) {
   updateDOM(book);
 }
 
+function createBookDom(name, author, publishingDate, coverURL, totalPages, readPages) {
+  const DOM_book = document.createElement("article");
+  DOM_book.classList.add("book");
+  if (coverURL) DOM_book.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
+
+  const DOM_title = document.createElement("h2");
+  DOM_title.classList.add("title");
+  DOM_title.innerHTML = name;
+
+  const DOM_author = document.createElement("address");
+  DOM_author.classList.add("author");
+  DOM_author.innerHTML = author;
+
+  const DOM_publishingDate = document.createElement("address");
+  DOM_publishingDate.classList.add("date");
+  DOM_publishingDate.innerHTML = `Published in</br>${publishingDate}`;
+
+  const DOM_progress = document.createElement("progress");
+  DOM_progress.value = readPages / totalPages;
+
+  const DOM_pOutOF = document.createElement("p");
+  DOM_pOutOF.classList.add("pages-read");
+  DOM_pOutOF.innerHTML = `${readPages} / ${totalPages}`;
+
+  DOM_book.appendChild(DOM_title);
+  DOM_book.appendChild(DOM_author);
+  DOM_book.appendChild(DOM_publishingDate);
+  DOM_book.appendChild(DOM_progress);
+  DOM_book.appendChild(DOM_pOutOF);
+
+  DOM_main.appendChild(DOM_book);
+}
+
+
+/*
+
+<article class="book">
+  <h2 class="title">Crime and Punishment</h2>
+  <address class="author">(Fyodor Mihayloviç Dostoyevski)</address>
+  <address class="date">Published in</br>17/11/1941</address>
+  <progress value="0"></progress>
+  <p class="pages-read">x / y</p>
+</article>
+
+*/
