@@ -41,6 +41,7 @@ function updateDOM(bookObject) {
 
 function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
   library.push(new Book(name, author, publishingDate, coverURL, totalPages, readPages, crypto.randomUUID()));
+  createBookDOM(library.at(-1));
 }
 
 function readBook(numberPages, bookID) {
@@ -76,29 +77,30 @@ function editBook(title, author, publishingDate, bookID) {
   updateDOM(book);
 }
 
-function createBookDOM(name, author, publishingDate, coverURL, totalPages, readPages) {
+function createBookDOM(bookObject) {
   const DOM_book = document.createElement("article");
   DOM_book.classList.add("book");
+  DOM_book.id = bookObject.bookID;
   if (coverURL) DOM_book.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
 
   const DOM_title = document.createElement("h2");
   DOM_title.classList.add("title");
-  DOM_title.innerHTML = name;
+  DOM_title.innerHTML = bookObject.name;
 
   const DOM_author = document.createElement("address");
   DOM_author.classList.add("author");
-  DOM_author.innerHTML = author;
+  DOM_author.innerHTML = bookObject.author;
 
   const DOM_publishingDate = document.createElement("address");
   DOM_publishingDate.classList.add("date");
-  DOM_publishingDate.innerHTML = `Published in</br>${publishingDate}`;
+  DOM_publishingDate.innerHTML = `Published in</br>${bookObject.publishingDate}`;
 
   const DOM_progress = document.createElement("progress");
-  DOM_progress.value = readPages / totalPages;
+  DOM_progress.value = bookObject.readPages / bookObject.totalPages;
 
   const DOM_pOutOF = document.createElement("p");
   DOM_pOutOF.classList.add("pages-read");
-  DOM_pOutOF.innerHTML = `${readPages} / ${totalPages}`;
+  DOM_pOutOF.innerHTML = `${bookObject.readPages} / ${bookObject.totalPages}`;
 
   DOM_book.appendChild(DOM_title);
   DOM_book.appendChild(DOM_author);
@@ -108,16 +110,3 @@ function createBookDOM(name, author, publishingDate, coverURL, totalPages, readP
 
   DOM_main.appendChild(DOM_book);
 }
-
-
-/*
-
-<article class="book">
-  <h2 class="title">Crime and Punishment</h2>
-  <address class="author">(Fyodor Mihayloviç Dostoyevski)</address>
-  <address class="date">Published in</br>17/11/1941</address>
-  <progress value="0"></progress>
-  <p class="pages-read">x / y</p>
-</article>
-
-*/
