@@ -1,9 +1,19 @@
 "use strict";
 
+/* ********************************** */
+/* * GLOBAL CONSTANTS AND VARIABLES * */
+/* ********************************** */
+
 const library = new Array();
 
 const DOM_main = document.querySelector("main");
 let currentlySelectedID = "";
+
+
+
+/* *************** */
+/* * CREATE BOOK * */
+/* *************** */
 
 function Book(name, author, publishingDate, coverURL, totalPages, readPages, bookID) {
   this.name = name;
@@ -13,70 +23,6 @@ function Book(name, author, publishingDate, coverURL, totalPages, readPages, boo
   this.readPages = readPages;
   this.totalPages = totalPages;
   this.bookID = bookID;
-}
-
-function getBookIndex(bookID) {
-  return library.findIndex(book => book.bookID === bookID);
-}
-
-function updateDOM(bookObject) {
-  const bookID = bookObject.bookID;
-
-  const bookArticle = document.querySelector(`article#${bookID}`);
-  const bookTitle = document.querySelector(`article#${bookID} h2.title`);
-  const bookAuthor = document.querySelector(`article#${bookID} address.author`);
-  const bookPublishingDate = document.querySelector(`article#${bookID} address.date`);
-  const bookReadPercentage = document.querySelector(`article#${bookID} progress`);
-  const bookReadOutOf = document.querySelector(`article#${bookID} p.pages-read`);
-
-  if (bookTitle) bookTitle.innerHTML = bookObject.name;
-  if (bookAuthor) bookAuthor.innerHTML = `${bookObject.author}`;
-  if (bookPublishingDate) bookPublishingDate.innerHTML = `Published in</br>${bookObject.publishingDate}`;
-  if (bookReadPercentage) bookReadPercentage.value = bookObject.readPages / bookObject.totalPages;
-  if (bookReadOutOf) bookReadOutOf.innerHTML = `${bookObject.readPages} / ${bookObject.totalPages}`;
-
-  if (bookObject.coverURL && bookArticle) {
-    bookArticle.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
-  }
-}
-
-function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
-  library.push(new Book(name, author, publishingDate, coverURL, totalPages, readPages, crypto.randomUUID()));
-  createBookDOM(library.at(-1));
-  addEventListenerToBook(library.at(-1).bookID, getCurrentID);
-}
-
-function readBook(numberPages, bookID) {
-  const bookIndex = getBookIndex(bookID);
-  if (bookIndex < 0) return;
-
-  const book = library[bookIndex];
-  book.readPages += numberPages;
-  if (book.readPages > book.totalPages) book.readPages = book.totalPages;
-
-  updateDOM(book);
-}
-
-function readAllBook(bookID) {
-  const bookIndex = getBookIndex(bookID);
-  if (bookIndex < 0) return;
-
-  const book = library[bookIndex];
-  book.readPages = book.totalPages;
-
-  updateDOM(book);
-}
-
-function editBook(title, author, publishingDate, bookID) {
-  const bookIndex = getBookIndex(bookID);
-  if (bookIndex < 0) return;
-
-  const book = library[bookIndex];
-  book.title = title;
-  book.author = author;
-  book.publishingDate = publishingDate;
-
-  updateDOM(book);
 }
 
 function createBookDOM(bookObject) {
@@ -126,3 +72,80 @@ function getCurrentID(e) {
   currentlySelectedID = e.currentTarget.id;
   e.currentTarget.classList.add("selected");
 }
+
+function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
+  library.push(new Book(name, author, publishingDate, coverURL, totalPages, readPages, crypto.randomUUID()));
+  createBookDOM(library.at(-1));
+  addEventListenerToBook(library.at(-1).bookID, getCurrentID);
+}
+
+
+
+/* ************** */
+/* * UPDATE BOOK* */
+/* ************** */
+
+function updateDOM(bookObject) {
+  const bookID = bookObject.bookID;
+
+  const bookArticle = document.querySelector(`article#${bookID}`);
+  const bookTitle = document.querySelector(`article#${bookID} h2.title`);
+  const bookAuthor = document.querySelector(`article#${bookID} address.author`);
+  const bookPublishingDate = document.querySelector(`article#${bookID} address.date`);
+  const bookReadPercentage = document.querySelector(`article#${bookID} progress`);
+  const bookReadOutOf = document.querySelector(`article#${bookID} p.pages-read`);
+
+  if (bookTitle) bookTitle.innerHTML = bookObject.name;
+  if (bookAuthor) bookAuthor.innerHTML = `${bookObject.author}`;
+  if (bookPublishingDate) bookPublishingDate.innerHTML = `Published in</br>${bookObject.publishingDate}`;
+  if (bookReadPercentage) bookReadPercentage.value = bookObject.readPages / bookObject.totalPages;
+  if (bookReadOutOf) bookReadOutOf.innerHTML = `${bookObject.readPages} / ${bookObject.totalPages}`;
+
+  if (bookObject.coverURL && bookArticle) {
+    bookArticle.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
+  }
+}
+
+
+
+/* ************* */
+/* * EDIT BOOK * */
+/* ************* */
+
+function getBookIndex(bookID) {
+  return library.findIndex(book => book.bookID === bookID);
+}
+
+function readBook(numberPages, bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const book = library[bookIndex];
+  book.readPages += numberPages;
+  if (book.readPages > book.totalPages) book.readPages = book.totalPages;
+
+  updateDOM(book);
+}
+
+function readAllBook(bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const book = library[bookIndex];
+  book.readPages = book.totalPages;
+
+  updateDOM(book);
+}
+
+function editBook(title, author, publishingDate, bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const book = library[bookIndex];
+  book.title = title;
+  book.author = author;
+  book.publishingDate = publishingDate;
+
+  updateDOM(book);
+}
+
