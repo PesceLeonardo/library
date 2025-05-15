@@ -27,8 +27,8 @@ function updateDOM(bookObject) {
   const bookReadOutOf = document.querySelector(`article#${bookID} p.pages-read`);
 
   if (bookTitle) bookTitle.innerHTML = bookObject.name;
-  if (bookAuthor) bookAuthor.innerHTML = `By ${bookObject.author}`;
-  if (bookPublishingDate) bookPublishingDate.innerHTML = `In ${bookObject.publishingDate}`;
+  if (bookAuthor) bookAuthor.innerHTML = `${bookObject.author}`;
+  if (bookPublishingDate) bookPublishingDate.innerHTML = `Published in</br>${bookObject.publishingDate}`;
   if (bookReadPercentage) bookReadPercentage.value = bookObject.readPages / bookObject.totalPages;
   if (bookReadOutOf) bookReadOutOf.innerHTML = `${bookObject.readPages} / ${bookObject.totalPages}`;
 
@@ -73,3 +73,4 @@ function editBook(title, author, publishingDate, bookID) {
 
   updateDOM(book);
 }
+
