@@ -3,6 +3,7 @@
 const library = new Array();
 
 const DOM_main = document.querySelector("main");
+let currentlySelectedID = "";
 
 function Book(name, author, publishingDate, coverURL, totalPages, readPages, bookID) {
   this.name = name;
@@ -42,6 +43,7 @@ function updateDOM(bookObject) {
 function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
   library.push(new Book(name, author, publishingDate, coverURL, totalPages, readPages, crypto.randomUUID()));
   createBookDOM(library.at(-1));
+  addEventListenerToBook(library.at(-1).bookID, getCurrentID);
 }
 
 function readBook(numberPages, bookID) {
@@ -109,4 +111,18 @@ function createBookDOM(bookObject) {
   DOM_book.appendChild(DOM_pOutOF);
 
   DOM_main.appendChild(DOM_book);
+}
+
+function addEventListenerToBook(bookID, callback) {
+  const DOM_book = document.querySelector(`#${bookID}`);
+  if (DOM_book) {
+    DOM_book.addEventListener("click", callback);
+  }
+}
+
+function getCurrentID(e) {
+  const currentlySelectedElement = document.querySelector(`#${currentlySelectedID}`);
+  currentlySelectedElement.classList.remove("selected");
+  currentlySelectedID = e.currentTarget.id;
+  e.currentTarget.classList.add("selected");
 }
