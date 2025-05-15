@@ -24,11 +24,13 @@ function updateDOM(bookObject) {
   const bookAuthor = document.querySelector(`article#${bookID} address.author`);
   const bookPublishingDate = document.querySelector(`article#${bookID} address.date`);
   const bookReadPercentage = document.querySelector(`article#${bookID} progress`);
+  const bookReadOutOf = document.querySelector(`article#${bookID} p.pages-read`);
 
   if (bookTitle) bookTitle.innerHTML = bookObject.name;
   if (bookAuthor) bookAuthor.innerHTML = `By ${bookObject.author}`;
   if (bookPublishingDate) bookPublishingDate.innerHTML = `In ${bookObject.publishingDate}`;
   if (bookReadPercentage) bookReadPercentage.value = bookObject.readPages / bookObject.totalPages;
+  if (bookReadOutOf) bookReadOutOf.innerHTML = `${bookObject.readPages} / ${bookObject.totalPages}`;
 
   if (bookObject.coverURL && bookArticle) {
     bookArticle.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
