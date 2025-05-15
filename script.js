@@ -76,7 +76,7 @@ function editBook(title, author, publishingDate, bookID) {
   updateDOM(book);
 }
 
-function createBookDom(name, author, publishingDate, coverURL, totalPages, readPages) {
+function createBookDOM(name, author, publishingDate, coverURL, totalPages, readPages) {
   const DOM_book = document.createElement("article");
   DOM_book.classList.add("book");
   if (coverURL) DOM_book.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
