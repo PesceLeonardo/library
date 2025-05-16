@@ -21,7 +21,7 @@ const DOM_editDialog = document.querySelector(".edit-book");
 
 const DOM_addSubmit = document.querySelector(".add-submit");
 const DOM_readSubmit = document.querySelector(".read-submit");
-const DOM_editSubmit = document.querySelector(".submit-book");
+const DOM_editSubmit = document.querySelector(".edit-submit");
 
 let currentlySelectedID = "";
 
@@ -172,15 +172,40 @@ function removeBook(bookID) {
   currentlySelectedID = "";
 }
 
+function getFullDate(day, month, year) {
+  if (day && month && year) return `${day}/${month}/${year}`;
+  else if (month && year) return `${month}/${year}`;
+  else if (year) return year;
+  else return null;
+}
 
-function editBook(title, author, publishingDate, bookID) {
+function editBook(bookID) {
   const bookIndex = getBookIndex(bookID);
   if (bookIndex < 0) return;
 
   const book = library[bookIndex];
-  book.title = title;
+
+  const title = document.getElementById("edit-title").value;
+  const author = document.getElementById("edit-author").value;
+  const day = document.getElementById("edit-day").value;
+  const month = document.getElementById("edit-month").value;
+  const year = document.getElementById("edit-year").value;
+  const totalPages = document.getElementById("edit-pages").value;
+
+  const file = document.getElementById("edit-image").files[0];
+  const useDefault = document.getElementById("use-default").checked;
+
+  book.name = title;
   book.author = author;
-  book.publishingDate = publishingDate;
+  book.publishingDate = getFullDate(day, month, year);
+  book.totalPages = totalPages;
+  if (book.readPages > book.totalPages) book.readAllBook = book.totalPages;
+
+  if (useDefault || !file) {
+    book.coverURL = null;
+  } else {
+    book.coverURL = URL.createObjectURL(file);
+  }
 
   updateDOM(book);
 }
@@ -196,15 +221,16 @@ DOM_addButton.addEventListener("click", function() {
 });
 
 DOM_readButton.addEventListener("click", function() {
+  if (!currentlySelectedID) return;
   DOM_readDialog.showModal();
 });
 
 DOM_editButton.addEventListener("click", function() {
-  DOM_editDialog.showModal();
+  if (!currentlySelectedID) return;
 
+  DOM_editDialog.showModal();
   fillEditModal(currentlySelectedID);
 });
-
 
 function fillEditModal(bookID) {
   const bookIndex = getBookIndex(bookID);
@@ -236,6 +262,7 @@ function fillEditModal(bookID) {
 }
 
 
+
 /* ************ */
 /* * GET DATA * */
 /* ************ */
@@ -253,10 +280,7 @@ DOM_addSubmit.addEventListener("click", function() {
   if (!title || !totalPages || Number(totalPages) < 1) return;
 
   let date = "";
-  if (day && month && year) date = `${day}/${month}/${year}`;
-  else if (month && year) date = `${month}/${year}`;
-  else if (year) date = year;
-  else date = null;
+  date = getFullDate(day, month, year);
 
   addNewBook(title, author, date, image, Number(totalPages), 0);
 
@@ -281,11 +305,17 @@ DOM_readAllButton.addEventListener("click", function() {
 
 DOM_resetButton.addEventListener("click", function() {
   readAllBook(currentlySelectedID, true);
-})
+});
 
 DOM_removeButton.addEventListener("click", function() {
   removeBook(currentlySelectedID);
-})
+});
+
+DOM_editSubmit.addEventListener("click", function() {
+  editBook(currentlySelectedID);
+
+  DOM_editDialog.close();
+});
 
 
 
@@ -306,4 +336,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   loadLibrary();
 });
+
+
 
