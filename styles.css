@@ -88,12 +88,17 @@ article.book {
 }
 
 article.book h2.title {
+  width: 100%;
+
   margin-bottom: 8px;
 
   font-family: "Oswald", sans-serif;
   font-size: 1.5rem;
 
   line-height: 40px;
+
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
 }
 
 article.book address.author,
@@ -103,6 +108,11 @@ article.book address.date {
 
 article.book address.author {
   margin-bottom: auto;
+
+  width: fit-content;
+
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
 }
 
 article.book p.pages-read {
@@ -173,10 +183,10 @@ article.book.selected {
   flex-direction: column;
 }
 
-.dialog form#add-book-form {
+.dialog form:first-child {
   flex: 1;
 
-  margin-bottom: 32px;
+  margin-bottom: auto;
 
   font-family: "Ancizar Serif", sans-serif;
 
@@ -190,28 +200,36 @@ article.book.selected {
 }
 
 label.dis-flex,
-.add-date.dis-flex {
+.add-date.dis-flex,
+.read-option.dis-flex {
   gap: 8px;
 }
 
 label.dis-flex input,
-.add-date.dis-flex label {
+.add-date.dis-flex label,
+.read-option.dis-flex label {
   flex: 1;
 }
 
-.add-date.dis-flex input {
+.add-date.dis-flex input,
+.read-option.dis-flex input {
   height: 100%;
   width: 100%;
 }
 
-.add-buttons {
+.buttons {
   height: var(--button-height);
 
   display: flex;
   justify-content: space-evenly;
 }
 
-.add-buttons button {
+.buttons form {
+  height: 100%;
+  width: min-content;
+}
+
+.buttons button {
   height: 100%;
   width: 148px;
 

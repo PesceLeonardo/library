@@ -21,6 +21,7 @@ const DOM_removeDialog = document.querySelector(".remove-book");
 const DOM_editDialog = document.querySelector(".edit-book");
 
 const DOM_addSubmit = document.querySelector(".add-submit");
+const DOM_readSubmit = document.querySelector(".read-submit");
 
 
 let currentlySelectedID = "";
@@ -38,13 +39,13 @@ function Book(name, author, publishingDate, coverURL, totalPages, readPages, boo
   this.coverURL = coverURL;
   this.readPages = readPages;
   this.totalPages = totalPages;
-  this.bookID = bookID;
+  this.bookID = `id${bookID}`;
 }
 
 function createBookDOM(bookObject) {
   const DOM_book = document.createElement("article");
   DOM_book.classList.add("book");
-  DOM_book.id = `id${bookObject.bookID}`;
+  DOM_book.id = bookObject.bookID;
   if (bookObject.coverURL) DOM_book.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
 
   const DOM_title = document.createElement("h2");
@@ -53,7 +54,7 @@ function createBookDOM(bookObject) {
 
   const DOM_author = document.createElement("address");
   DOM_author.classList.add("author");
-  DOM_author.innerHTML = bookObject.author ?? "Unknown";
+  DOM_author.innerHTML = bookObject.author || "Unknown";
 
   const DOM_publishingDate = document.createElement("address");
   DOM_publishingDate.classList.add("date");
@@ -76,7 +77,7 @@ function createBookDOM(bookObject) {
 }
 
 function addEventListenerToBook(bookID, callback) {
-  const DOM_book = document.querySelector(`#id${bookID}`);
+  const DOM_book = document.querySelector(`#${bookID}`);
   if (DOM_book) {
     DOM_book.addEventListener("click", callback);
   }
@@ -134,12 +135,14 @@ function getBookIndex(bookID) {
   return library.findIndex(book => book.bookID === bookID);
 }
 
-function readBook(numberPages, bookID) {
+function readBook(numberPages, bookID, upTo) {
   const bookIndex = getBookIndex(bookID);
   if (bookIndex < 0) return;
 
   const book = library[bookIndex];
-  book.readPages += numberPages;
+  if (upTo) book.readPages = numberPages;
+  else book.readPages += numberPages;
+
   if (book.readPages > book.totalPages) book.readPages = book.totalPages;
 
   updateDOM(book);
@@ -206,8 +209,10 @@ DOM_addSubmit.addEventListener("click", function() {
   const month = document.getElementById("add-month").value;
   const year = document.getElementById("add-year").value;
   const totalPages = document.getElementById("add-pages").value;
-  const file = document.getElementById("add-image").files[0]
+  const file = document.getElementById("add-image").files[0];
   const image = file ? URL.createObjectURL(file) : null;
+
+  if (!title || !totalPages || Number(totalPages) < 1) return;
 
   let date = "";
   if (day && month && year) date = `${day}/${month}/${year}`;
@@ -215,8 +220,54 @@ DOM_addSubmit.addEventListener("click", function() {
   else if (year) date = year;
   else date = null;
 
-  addNewBook(title, author, date, image, totalPages, 0);
+  addNewBook(title, author, date, image, Number(totalPages), 0);
 
   DOM_addDialog.close();
 });
 
+DOM_readSubmit.addEventListener("click", function() {
+  const DOM_upTo = document.querySelector("input[name=\"read-option\"]:checked");
+  const pages = document.getElementById("read-pages").value;
+  if (!DOM_upTo || !pages || Number(pages) < 1) return;
+
+  const upTo = Number(DOM_upTo.value);
+
+  readBook(Number(pages), currentlySelectedID, upTo);
+
+  DOM_readDialog.close();
+});
+
+/*
+
+<dialog class="read-book dialog">
+
+      <div class="wrapper">
+
+        <form id="read-book-form">
+          <label for="read-pages" class="dis-flex">Pages:
+            <input type="number" name="read-pages" id="read-pages">
+          </label>
+
+          <div class="read-option dis-flex">
+            <label for="read-option-add" class="dis-flex"><span class="read-option-label">Add:</span>
+              <input type="radio" name="read-option" id="read-option-add" value="0" required>
+            </label>
+            <label for="read-option-up-to" class="dis-flex"><span class="read-option-label">Up to:</span>
+              <input type="radio" name="read-option" id="read-option-up-to" value="1" required>
+            </label>
+          </div>
+        </form>
+
+        <div class="buttons">
+          <button form="read-book-form" type="button" class="read-submit">Submit</button>
+
+          <form method="dialog">
+            <button>Cancel</button>
+          </form>
+        </div>
+
+      </div>
+
+    </dialog>
+
+*/

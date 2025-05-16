@@ -50,12 +50,43 @@
           </label>
         </form>
 
-        <div class="add-buttons">
+        <div class="buttons">
+          <button form="add-book-form" type="button" class="add-submit">Submit</button>
+
           <form method="dialog">
             <button>Cancel</button>
           </form>
+        </div>
 
-          <button form="add-book-form" type="button" class="add-submit">Submit</button>
+      </div>
+
+    </dialog>
+
+    <dialog class="read-book dialog">
+
+      <div class="wrapper">
+
+        <form id="read-book-form">
+          <label for="read-pages" class="dis-flex">Pages:
+            <input type="number" name="read-pages" id="read-pages">
+          </label>
+
+          <div class="read-option dis-flex">
+            <label for="read-option-add" class="dis-flex"><span class="read-option-label">Add:</span>
+              <input type="radio" name="read-option" id="read-option-add" value="0" required>
+            </label>
+            <label for="read-option-up-to" class="dis-flex"><span class="read-option-label">Up to:</span>
+              <input type="radio" name="read-option" id="read-option-up-to" value="1" required>
+            </label>
+          </div>
+        </form>
+
+        <div class="buttons">
+          <button form="read-book-form" type="button" class="read-submit">Submit</button>
+
+          <form method="dialog">
+            <button>Cancel</button>
+          </form>
         </div>
 
       </div>
