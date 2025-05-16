@@ -16,6 +16,7 @@
 
   <body>
 
+    <!-- ADD BOOK MODAL -->
     <dialog class="add-book dialog">
 
       <div class="wrapper">
@@ -62,6 +63,7 @@
 
     </dialog>
 
+    <!-- READ BOOK MODAL -->
     <dialog class="read-book dialog">
 
       <div class="wrapper">
@@ -93,6 +95,53 @@
 
     </dialog>
 
+    <!-- EDIT BOOK MODAL -->
+    <dialog class="edit-book dialog">
+
+      <div class="wrapper">
+
+        <form id="edit-book-form">
+          <label for="edit-title" class="dis-flex">Title:
+            <input type="text" name="edit-title" id="edit-title" required>
+          </label>
+
+          <label for="edit-author" class="dis-flex">Author:
+            <input type="text" name="edit-author" id="edit-author">
+          </label>
+
+          <div class="edit-date dis-flex">Publishing date:
+            <label for="edit-day">
+              <input type="number" name="edit-day" id="edit-day" placeholder="day" min="1" max="31">
+            </label>/
+            <label for="edit-month">
+              <input type="number" name="edit-month" id="edit-month" placeholder="month" min="1" max="12">
+            </label>/
+            <label for="edit-year">
+              <input type="number" name="edit-year" id="edit-year" placeholder="year">
+            </label>
+          </div>
+
+          <label for="edit-pages" class="dis-flex">Total pages:
+            <input type="number" name="edit-pages" id="edit-pages" required>
+          </label>
+
+          <label for="edit-image" class="dis-flex">Book cover:
+            <input type="file" name="edit-image" id="edit-image">
+          </label>
+        </form>
+
+        <div class="buttons">
+          <button form="edit-book-form" type="button" class="edit-submit">Submit</button>
+
+          <form method="dialog">
+            <button>Cancel</button>
+          </form>
+        </div>
+
+      </div>
+
+    </dialog>
+
     <div class="container">
 
       <nav class="sidebar">
@@ -100,108 +149,13 @@
           <li><button type="button" class="add-button">Add</button></li>
           <li><button type="button" class="read-button">Read</button></li>
           <li><button type="button" class="read-all-button">Finish</button></li>
+          <li><button type="button" class="reset-button">Reset</button></li>
           <li><button type="button" class="remove-button">Remove</button></li>
           <li><button type="button" class="edit-button">edit</button></li>
         </ul>
       </nav>
 
       <main>
-
-        <article class="book selected">
-          <h2 class="title">Crime and Punishment</h2>
-          <address class="author">(Fyodor Mihayloviç Dostoyevski)</address>
-          <address class="date">Published in</br>17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Limitless</h2>
-          <address class="author">Power</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">La Coscienza di Zeno</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Eragon</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 2</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 3</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 1</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 2</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 3</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 1</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 2</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
-
-        <article class="book">
-          <h2 class="title">Title 3</h2>
-          <address class="author">By Author</address>
-          <address class="date">In 17/11/1941</address>
-          <progress value="0"></progress>
-          <p class="pages-read">x / y</p>
-        </article>
 
       </main>
 

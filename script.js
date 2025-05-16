@@ -11,18 +11,17 @@ const DOM_main = document.querySelector("main");
 const DOM_addButton = document.querySelector(".add-button");
 const DOM_readButton = document.querySelector(".read-button");
 const DOM_readAllButton = document.querySelector(".read-all-button");
+const DOM_resetButton = document.querySelector(".reset-button");
 const DOM_removeButton = document.querySelector(".remove-button");
 const DOM_editButton = document.querySelector(".edit-button");
 
 const DOM_addDialog = document.querySelector(".add-book");
 const DOM_readDialog = document.querySelector(".read-book");
-const DOM_readAllDialog = document.querySelector(".read-all-book");
-const DOM_removeDialog = document.querySelector(".remove-book");
 const DOM_editDialog = document.querySelector(".edit-book");
 
 const DOM_addSubmit = document.querySelector(".add-submit");
 const DOM_readSubmit = document.querySelector(".read-submit");
-
+const DOM_editSubmit = document.querySelector(".submit-book");
 
 let currentlySelectedID = "";
 
@@ -85,17 +84,21 @@ function addEventListenerToBook(bookID, callback) {
 
 function getCurrentID(e) {
   if (currentlySelectedID) {
-    const currentlySelectedElement = document.querySelector(`#${currentlySelectedID}`);
+    const currentlySelectedElement = document.getElementById(currentlySelectedID);
     currentlySelectedElement.classList.remove("selected");
   }
   currentlySelectedID = e.currentTarget.id;
   e.currentTarget.classList.add("selected");
 }
 
+function loadBook(bookObject) {
+  createBookDOM(bookObject);
+  addEventListenerToBook(bookObject.bookID, getCurrentID);
+}
+
 function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
   library.push(new Book(name, author, publishingDate, coverURL, totalPages, readPages, crypto.randomUUID()));
-  createBookDOM(library.at(-1));
-  addEventListenerToBook(library.at(-1).bookID, getCurrentID);
+  loadBook(library.at(-1));
 }
 
 
@@ -148,15 +151,27 @@ function readBook(numberPages, bookID, upTo) {
   updateDOM(book);
 }
 
-function readAllBook(bookID) {
+function readAllBook(bookID, reset = false) {
   const bookIndex = getBookIndex(bookID);
   if (bookIndex < 0) return;
 
   const book = library[bookIndex];
-  book.readPages = book.totalPages;
+  book.readPages = !reset ? book.totalPages : 0;
 
   updateDOM(book);
 }
+
+function removeBook(bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const DOM_bookNode = document.getElementById(bookID);
+  DOM_main.removeChild(DOM_bookNode);
+  library.splice(bookIndex, 1);
+
+  currentlySelectedID = "";
+}
+
 
 function editBook(title, author, publishingDate, bookID) {
   const bookIndex = getBookIndex(bookID);
@@ -178,24 +193,47 @@ function editBook(title, author, publishingDate, bookID) {
 
 DOM_addButton.addEventListener("click", function() {
   DOM_addDialog.showModal();
-})
+});
 
 DOM_readButton.addEventListener("click", function() {
   DOM_readDialog.showModal();
-})
-
-DOM_readAllButton.addEventListener("click", function() {
-  DOM_readAllDialog.showModal();
-})
-
-DOM_removeButton.addEventListener("click", function() {
-  DOM_removeDialog.showModal();
-})
+});
 
 DOM_editButton.addEventListener("click", function() {
   DOM_editDialog.showModal();
-})
 
+  fillEditModal(currentlySelectedID);
+});
+
+
+function fillEditModal(bookID) {
+  const bookIndex = getBookIndex(bookID);
+  if (bookIndex < 0) return;
+
+  const book = library[bookIndex];
+
+  const DOM_title = document.getElementById("edit-title");
+  const DOM_author = document.getElementById("edit-author");
+  const DOM_day = document.getElementById("edit-day");
+  const DOM_month = document.getElementById("edit-month");
+  const DOM_year = document.getElementById("edit-year");
+  const DOM_pages = document.getElementById("edit-pages");
+
+  DOM_title.value = book.name;
+  DOM_author.value = book.author ?? "";
+  DOM_pages.value = book.totalPages;
+
+  const dateArray = book.publishingDate.split("/");
+  switch (dateArray.length) {
+    case 3:
+      DOM_day.value = dateArray.at(-3);
+    case 2:
+      DOM_month.value = dateArray.at(-2);
+    case 1:
+      DOM_year.value = dateArray.at(-1);
+      break;
+  }
+}
 
 
 /* ************ */
@@ -237,37 +275,35 @@ DOM_readSubmit.addEventListener("click", function() {
   DOM_readDialog.close();
 });
 
-/*
+DOM_readAllButton.addEventListener("click", function() {
+  readAllBook(currentlySelectedID, false);
+});
 
-<dialog class="read-book dialog">
+DOM_resetButton.addEventListener("click", function() {
+  readAllBook(currentlySelectedID, true);
+})
 
-      <div class="wrapper">
+DOM_removeButton.addEventListener("click", function() {
+  removeBook(currentlySelectedID);
+})
 
-        <form id="read-book-form">
-          <label for="read-pages" class="dis-flex">Pages:
-            <input type="number" name="read-pages" id="read-pages">
-          </label>
 
-          <div class="read-option dis-flex">
-            <label for="read-option-add" class="dis-flex"><span class="read-option-label">Add:</span>
-              <input type="radio" name="read-option" id="read-option-add" value="0" required>
-            </label>
-            <label for="read-option-up-to" class="dis-flex"><span class="read-option-label">Up to:</span>
-              <input type="radio" name="read-option" id="read-option-up-to" value="1" required>
-            </label>
-          </div>
-        </form>
 
-        <div class="buttons">
-          <button form="read-book-form" type="button" class="read-submit">Submit</button>
+/* **************** */
+/* * LOAD LIBRARY * */
+/* **************** */
 
-          <form method="dialog">
-            <button>Cancel</button>
-          </form>
-        </div>
+function loadLibrary() {
+  for (const book of library) {
+    loadBook(book);
+  }
+}
 
-      </div>
+document.addEventListener("DOMContentLoaded", function() {
+  library.push(new Book("Inheritance", "Paolini", "1987", null, 627, 0, crypto.randomUUID()));
+  library.push(new Book("Eldest", "Paolini", "1993", null, 415, 0, crypto.randomUUID()));
+  library.push(new Book("V for Vendetta", "Lloyd", "1995", null, 90, 0, crypto.randomUUID()));
 
-    </dialog>
+  loadLibrary();
+});
 
-*/
