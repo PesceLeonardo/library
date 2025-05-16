@@ -20,6 +20,8 @@ const DOM_readAllDialog = document.querySelector(".read-all-book");
 const DOM_removeDialog = document.querySelector(".remove-book");
 const DOM_editDialog = document.querySelector(".edit-book");
 
+const DOM_addSubmit = document.querySelector(".add-submit");
+
 
 let currentlySelectedID = "";
 
@@ -42,8 +44,8 @@ function Book(name, author, publishingDate, coverURL, totalPages, readPages, boo
 function createBookDOM(bookObject) {
   const DOM_book = document.createElement("article");
   DOM_book.classList.add("book");
-  DOM_book.id = bookObject.bookID;
-  if (coverURL) DOM_book.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
+  DOM_book.id = `id${bookObject.bookID}`;
+  if (bookObject.coverURL) DOM_book.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
 
   const DOM_title = document.createElement("h2");
   DOM_title.classList.add("title");
@@ -74,15 +76,17 @@ function createBookDOM(bookObject) {
 }
 
 function addEventListenerToBook(bookID, callback) {
-  const DOM_book = document.querySelector(`#${bookID}`);
+  const DOM_book = document.querySelector(`#id${bookID}`);
   if (DOM_book) {
     DOM_book.addEventListener("click", callback);
   }
 }
 
 function getCurrentID(e) {
-  const currentlySelectedElement = document.querySelector(`#${currentlySelectedID}`);
-  currentlySelectedElement.classList.remove("selected");
+  if (currentlySelectedID) {
+    const currentlySelectedElement = document.querySelector(`#${currentlySelectedID}`);
+    currentlySelectedElement.classList.remove("selected");
+  }
   currentlySelectedID = e.currentTarget.id;
   e.currentTarget.classList.add("selected");
 }
@@ -194,4 +198,25 @@ DOM_editButton.addEventListener("click", function() {
 /* ************ */
 /* * GET DATA * */
 /* ************ */
+
+DOM_addSubmit.addEventListener("click", function() {
+  const title = document.getElementById("add-title").value;
+  const author = document.getElementById("add-author").value;
+  const day = document.getElementById("add-day").value;
+  const month = document.getElementById("add-month").value;
+  const year = document.getElementById("add-year").value;
+  const totalPages = document.getElementById("add-pages").value;
+  const file = document.getElementById("add-image").files[0]
+  const image = file ? URL.createObjectURL(file) : null;
+
+  let date = "";
+  if (day && month && year) date = `${day}/${month}/${year}`;
+  else if (month && year) date = `${month}/${year}`;
+  else if (year) date = year;
+  else date = null;
+
+  addNewBook(title, author, date, image, totalPages, 0);
+
+  DOM_addDialog.close();
+});
 

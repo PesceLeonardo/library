@@ -217,3 +217,7 @@ label.dis-flex input,
 
   border-radius: calc(var(--button-height) / 2);
 }
+
+#add-image {
+  margin-top: 4px;
+}
