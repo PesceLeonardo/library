@@ -7,6 +7,20 @@
 const library = new Array();
 
 const DOM_main = document.querySelector("main");
+
+const DOM_addButton = document.querySelector(".add-button");
+const DOM_readButton = document.querySelector(".read-button");
+const DOM_readAllButton = document.querySelector(".read-all-button");
+const DOM_removeButton = document.querySelector(".remove-button");
+const DOM_editButton = document.querySelector(".edit-button");
+
+const DOM_addDialog = document.querySelector(".add-book");
+const DOM_readDialog = document.querySelector(".read-book");
+const DOM_readAllDialog = document.querySelector(".read-all-book");
+const DOM_removeDialog = document.querySelector(".remove-book");
+const DOM_editDialog = document.querySelector(".edit-book");
+
+
 let currentlySelectedID = "";
 
 
@@ -37,11 +51,11 @@ function createBookDOM(bookObject) {
 
   const DOM_author = document.createElement("address");
   DOM_author.classList.add("author");
-  DOM_author.innerHTML = bookObject.author;
+  DOM_author.innerHTML = bookObject.author ?? "Unknown";
 
   const DOM_publishingDate = document.createElement("address");
   DOM_publishingDate.classList.add("date");
-  DOM_publishingDate.innerHTML = `Published in</br>${bookObject.publishingDate}`;
+  DOM_publishingDate.innerHTML = `Published in</br>${bookObject.publishingDate ?? "Unknown"}`;
 
   const DOM_progress = document.createElement("progress");
   DOM_progress.value = bookObject.readPages / bookObject.totalPages;
@@ -148,4 +162,36 @@ function editBook(title, author, publishingDate, bookID) {
 
   updateDOM(book);
 }
+
+
+
+/* *************** */
+/* * OPEN MODALS * */
+/* *************** */
+
+DOM_addButton.addEventListener("click", function() {
+  DOM_addDialog.showModal();
+})
+
+DOM_readButton.addEventListener("click", function() {
+  DOM_readDialog.showModal();
+})
+
+DOM_readAllButton.addEventListener("click", function() {
+  DOM_readAllDialog.showModal();
+})
+
+DOM_removeButton.addEventListener("click", function() {
+  DOM_removeDialog.showModal();
+})
+
+DOM_editButton.addEventListener("click", function() {
+  DOM_editDialog.showModal();
+})
+
+
+
+/* ************ */
+/* * GET DATA * */
+/* ************ */
 

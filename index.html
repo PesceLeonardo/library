@@ -5,13 +5,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet">
 
     <link rel="stylesheet" href="./styles.css">
@@ -22,6 +16,48 @@
 
   <body>
 
+    <dialog class="add-book dialog">
+
+      <div class="wrapper">
+
+        <form id="add-book-form">
+          <label for="add-title" class="dis-flex">Title:
+            <input type="text" name="title" id="add-title" required>
+          </label>
+
+          <label for="add-author" class="dis-flex">Author:
+            <input type="text" name="author" id="add-author">
+          </label>
+
+          <div class="add-date dis-flex">Publishing date:
+            <label for="add-day">
+              <input type="number" name="day" id="add-day" placeholder="day" min="1" max="31">
+            </label>/
+            <label for="add-month">
+              <input type="number" name="month" id="add-month" placeholder="month" min="1" max="12">
+            </label>/
+            <label for="add-year">
+              <input type="number" name="year" id="add-year" placeholder="year">
+            </label>
+          </div>
+
+          <label for="add-pages" class="dis-flex">Total pages:
+            <input type="number" name="pages" id="add-pages" required>
+          </label>
+        </form>
+
+        <div class="add-buttons">
+          <form method="dialog">
+            <button>Cancel</button>
+          </form>
+
+          <button form="add-book-form" type="button">Submit</button>
+        </div>
+
+      </div>
+
+    </dialog>
+
     <div class="container">
 
       <nav class="sidebar">
@@ -30,12 +66,11 @@
           <li><button type="button" class="read-button">Read</button></li>
           <li><button type="button" class="read-all-button">Finish</button></li>
           <li><button type="button" class="remove-button">Remove</button></li>
+          <li><button type="button" class="edit-button">edit</button></li>
         </ul>
       </nav>
 
       <main>
-
-
 
         <article class="book selected">
           <h2 class="title">Crime and Punishment</h2>

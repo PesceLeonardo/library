@@ -15,6 +15,9 @@
   --book-border-radius: 20px;
   --book-padding: 20px;
   --button-height: 50px;
+  --dialog-height: 300px;
+  --dialog-width: 600px;
+  --button-height: 48px;
 
   font-size: 24px;
 }
@@ -61,6 +64,8 @@ main {
   gap: var(--main-gap);
 }
 
+
+
 /* ********* */
 /* * BOOKS * */
 /* ********* */
@@ -69,6 +74,7 @@ article.book {
   padding: var(--book-padding);
 
   text-align: center;
+  font-family: "Ancizar Serif", sans-serif;
 
   background: linear-gradient(to bottom right, white, gray);
   border: 1px solid black;
@@ -103,6 +109,8 @@ article.book p.pages-read {
   font-weight: bold;
 }
 
+
+
 /* *********** */
 /* * SIDEBAR * */
 /* *********** */
@@ -136,4 +144,76 @@ nav.sidebar button {
 
 article.book.selected {
   border: 4px solid greenyellow;
+}
+
+
+
+/* ********** */
+/* * MODALS * */
+/* ********** */
+
+.dialog {
+  padding: 20px;
+
+  height: var(--dialog-height);
+  width: var(--dialog-width);
+
+  border-radius: 12px;
+
+  position: absolute;
+  top: calc(50% - var(--dialog-height) / 2);
+  left: calc(50% - var(--dialog-width) / 2);
+}
+
+.wrapper {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog form#add-book-form {
+  flex: 1;
+
+  margin-bottom: 32px;
+
+  font-family: "Ancizar Serif", sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.dis-flex {
+  display: flex;
+}
+
+label.dis-flex,
+.add-date.dis-flex {
+  gap: 8px;
+}
+
+label.dis-flex input,
+.add-date.dis-flex label {
+  flex: 1;
+}
+
+.add-date.dis-flex input {
+  height: 100%;
+  width: 100%;
+}
+
+.add-buttons {
+  height: var(--button-height);
+
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.add-buttons button {
+  height: 100%;
+  width: 148px;
+
+  border-radius: calc(var(--button-height) / 2);
 }
