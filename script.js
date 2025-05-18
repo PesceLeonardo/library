@@ -66,19 +66,28 @@ function createBookDOM(bookObject) {
   DOM_pOutOF.classList.add("pages-read");
   DOM_pOutOF.innerHTML = `${bookObject.readPages} / ${bookObject.totalPages}`;
 
+  const DOM_remove = document.createElement("button");
+  DOM_remove.classList.add("cross");
+  DOM_remove.innerHTML = "REMOVE";
+
   DOM_book.appendChild(DOM_title);
   DOM_book.appendChild(DOM_author);
   DOM_book.appendChild(DOM_publishingDate);
   DOM_book.appendChild(DOM_progress);
   DOM_book.appendChild(DOM_pOutOF);
+  DOM_book.appendChild(DOM_remove);
 
   DOM_main.appendChild(DOM_book);
 }
 
-function addEventListenerToBook(bookID, callback) {
+function addEventListenerToBook(bookID, callback_book, callback_remove) {
   const DOM_book = document.querySelector(`#${bookID}`);
   if (DOM_book) {
-    DOM_book.addEventListener("click", callback);
+    DOM_book.addEventListener("click", callback_book);
+  }
+  const DOM_removeButton = document.querySelector(`#${bookID} .cross`);
+  if (DOM_removeButton) {
+    DOM_removeButton.addEventListener("click", callback_remove);
   }
 }
 
@@ -93,7 +102,7 @@ function getCurrentID(e) {
 
 function loadBook(bookObject) {
   createBookDOM(bookObject);
-  addEventListenerToBook(bookObject.bookID, getCurrentID);
+  addEventListenerToBook(bookObject.bookID, getCurrentID, function() { removeBook(bookObject.bookID) });
 }
 
 function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {

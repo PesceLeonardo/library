@@ -240,3 +240,13 @@ label.dis-flex input,
 #edit-image {
   margin-top: 4px;
 }
+
+.cross {
+  position: relative;
+  top: 12px;
+
+  margin-top: -12px;
+
+  height: 24px;
+  width: 64px;
+}
