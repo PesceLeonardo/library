@@ -92,6 +92,7 @@ function addEventListenerToBook(bookID, callback_book, callback_remove) {
 }
 
 function getCurrentID(e) {
+  if (e.target.closest(".cross")) return;
   if (currentlySelectedID) {
     const currentlySelectedElement = document.getElementById(currentlySelectedID);
     currentlySelectedElement.classList.remove("selected");
@@ -102,7 +103,7 @@ function getCurrentID(e) {
 
 function loadBook(bookObject) {
   createBookDOM(bookObject);
-  addEventListenerToBook(bookObject.bookID, getCurrentID, function() { removeBook(bookObject.bookID) });
+  addEventListenerToBook(bookObject.bookID, getCurrentID, function() { removeBook(bookObject.bookID); });
 }
 
 function addNewBook(name, author, publishingDate, coverURL, totalPages, readPages) {
@@ -134,6 +135,8 @@ function updateDOM(bookObject) {
 
   if (bookObject.coverURL && bookArticle) {
     bookArticle.style.background = `center / cover no-repeat url("${bookObject.coverURL}")`;
+  } else {
+    bookArticle.style.background = "";
   }
 }
 
@@ -178,7 +181,7 @@ function removeBook(bookID) {
   DOM_main.removeChild(DOM_bookNode);
   library.splice(bookIndex, 1);
 
-  currentlySelectedID = "";
+  if (bookID === currentlySelectedID) currentlySelectedID = "";
 }
 
 function getFullDate(day, month, year) {
@@ -207,8 +210,8 @@ function editBook(bookID) {
   book.name = title;
   book.author = author;
   book.publishingDate = getFullDate(day, month, year);
-  book.totalPages = totalPages;
-  if (book.readPages > book.totalPages) book.readAllBook = book.totalPages;
+  book.totalPages = Number(totalPages) || 1;
+  if (book.readPages > book.totalPages) book.readPages = book.totalPages;
 
   if (useDefault || !file) {
     book.coverURL = null;
@@ -276,7 +279,8 @@ function fillEditModal(bookID) {
 /* * GET DATA * */
 /* ************ */
 
-DOM_addSubmit.addEventListener("click", function() {
+DOM_addSubmit.addEventListener("click", function(e) {
+  e.preventDefault();
   const title = document.getElementById("add-title").value;
   const author = document.getElementById("add-author").value;
   const day = document.getElementById("add-day").value;
@@ -293,10 +297,12 @@ DOM_addSubmit.addEventListener("click", function() {
 
   addNewBook(title, author, date, image, Number(totalPages), 0);
 
+  document.querySelector(".add-book form").reset();
   DOM_addDialog.close();
 });
 
-DOM_readSubmit.addEventListener("click", function() {
+DOM_readSubmit.addEventListener("click", function(e) {
+  e.preventDefault();
   const DOM_upTo = document.querySelector("input[name=\"read-option\"]:checked");
   const pages = document.getElementById("read-pages").value;
   if (!DOM_upTo || !pages || Number(pages) < 1) return;
@@ -320,7 +326,8 @@ DOM_removeButton.addEventListener("click", function() {
   removeBook(currentlySelectedID);
 });
 
-DOM_editSubmit.addEventListener("click", function() {
+DOM_editSubmit.addEventListener("click", function(e) {
+  e.preventDefault();
   editBook(currentlySelectedID);
 
   DOM_editDialog.close();
